@@ -17,16 +17,17 @@ function deepModify(body) {
       'request_date_ms',
       'subscriber.original_purchase_date',
       'subscriber.last_seen',
-      'subscriber.subscriptions.com.neybox.pillow.premium.year.purchase_date',
-      'subscriber.subscriptions.com.neybox.pillow.premium.year.original_purchase_date',
+      'subscriber.subscriptions["com.neybox.pillow.premium.year"].purchase_date',
+      'subscriber.subscriptions["com.neybox.pillow.premium.year"].original_purchase_date',
       'subscriber.entitlements.premium.purchase_date'
     ];
 
     timeFields.forEach(path => {
-      const keys = path.split('.');
+      const keys = path.split('.').map(key => key.replace(/\["|"\]/g, ''));
       let obj = body;
       for (let i = 0; i < keys.length - 1; i++) {
         obj = obj[keys[i]];
+        if (!obj) return; // 防止路径错误导致崩溃
       }
       const lastKey = keys[keys.length - 1];
       obj[lastKey] = lastKey.endsWith('_ms') ? timestamp : isoDate;
@@ -49,9 +50,8 @@ function deepModify(body) {
 
 function modifyResponse(res) {
   try {
-    log(`开始处理 ${res.url}`);
+    log(`开始处理 ${res.url || "(未知URL)"}`);
 
-    // 处理Brotli压缩
     if (res.headers['Content-Encoding'] === 'br') {
       res.body = $brotli.decode(res.body);
       log(`Brotli解压完成，原始长度: ${res.body.length}`);
@@ -71,12 +71,10 @@ function modifyResponse(res) {
     ];
     removeHeaders.forEach(h => delete res.headers[h]);
 
-    // 重建响应头
     res.headers['x-revenuecat-request-time'] = Date.now().toString();
     res.headers['Date'] = new Date().toUTCString();
     res.headers['Content-Type'] = 'application/json';
 
-    // 重新压缩
     const finalBody = JSON.stringify(modifiedBody);
     res.body = $brotli.encode(finalBody);
     res.headers['Content-Encoding'] = 'br';
