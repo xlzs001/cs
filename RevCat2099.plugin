@@ -4,8 +4,7 @@ type = script
 enabled = true
 debug = true
 script = https://raw.githubusercontent.com/xlzs001/cs/refs/heads/main/revcat2099.js
-使用声明：此脚本仅供学习与交流使用，未经作者授权，请勿转载、复制、分发或用于任何商业用途。任何形式的转售或贩卖行为都是对原创作者的侵权行为，必须依法追究责任。使用此脚本时，请尊重版权及知识产权，确保其仅用于合法、合规的场合。
-感谢您的理解与支持！
+使用声明：此脚本仅供学习与交流使用 请勿转载与贩卖！
 [MITM]
 hostname = api.rc-backup.com, revenuecat.com, api.revenuecat.com
 
