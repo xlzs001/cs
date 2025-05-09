@@ -1,37 +1,29 @@
+// Pillow Enhanced Subscription Unlock Script
+
+// 读取原始响应数据
 var objc = JSON.parse($response.body);
 
-objc = {
-  "request_date": "2023-09-26T12:00:00Z",  // 请求时间
-  "request_date_ms": 1837536263,  // 毫秒时间戳
-  "subscriber": {
-    "entitlements": {
-      "premium": {
-        "expires_date": "2099-12-31T23:59:59Z",  // 订阅到期时间设置为远期
-        "grace_period_expires_date": null,
-        "product_identifier": "com.neybox.pillow.premium.month",  // 产品ID（订阅类型）
-        "purchase_date": "2022-01-01T00:00:00Z"  // 购买日期
-      }
-    },
-    "first_seen": "2023-09-26T12:00:00Z",  // 首次见到时间
-    "last_seen": "2023-09-26T12:00:00Z",  // 最后一次访问时间
-    "original_app_user_id": "user123",  // 用户ID
-    "original_application_version": "1.0",  // 应用版本
-    "original_purchase_date": "2022-01-01T00:00:00Z",  // 原始购买日期
-    "subscriptions": {
-      "com.neybox.pillow.premium.month": {
-        "billing_issues_detected_at": null,
-        "expires_date": "2099-12-31T23:59:59Z",  // 设置长期有效订阅
-        "grace_period_expires_date": null,
-        "is_sandbox": false,
-        "original_purchase_date": "2022-01-01T00:00:00Z",
-        "ownership_type": "PURCHASED",
-        "period_type": "active",  // 订阅状态设为 "active"
-        "purchase_date": "2022-01-01T00:00:00Z",
-        "store": "app_store",
-        "unsubscribe_detected_at": null
-      }
+// 确保原始数据结构存在
+if (objc.subscriber && objc.subscriber.subscriptions) {
+    // 遍历所有订阅项目
+    for (var subscription in objc.subscriber.subscriptions) {
+        if (objc.subscriber.subscriptions.hasOwnProperty(subscription)) {
+            // 修改到期日期和购买日期
+            objc.subscriber.subscriptions[subscription].expires_date = '2099-12-31T23:59:59Z';
+            objc.subscriber.subscriptions[subscription].purchase_date = '2025-01-01T00:00:00Z';
+        }
     }
-  }
-};
 
-$done({ body: JSON.stringify(objc) });
+    // 确保权限信息也被同步修改
+    if (objc.subscriber.entitlements) {
+        for (var entitlement in objc.subscriber.entitlements) {
+            if (objc.subscriber.entitlements.hasOwnProperty(entitlement)) {
+                objc.subscriber.entitlements[entitlement].expires_date = '2099-12-31T23:59:59Z';
+                objc.subscriber.entitlements[entitlement].purchase_date = '2025-01-01T00:00:00Z';
+            }
+        }
+    }
+}
+
+// 返回修改后的数据
+$done({body: JSON.stringify(objc)});
