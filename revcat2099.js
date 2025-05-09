@@ -1,39 +1,29 @@
-// 确保响应体不为空
-if ($response.body) {
-    try {
-        // 尝试解析响应体
-        var obj = JSON.parse($response.body);
+// Pillow Enhanced Subscription Unlock Script
 
-        // 设置模拟订阅信息
-        obj = {
-          "request_date": new Date().toISOString(),
-          "request_date_ms": Date.now(),
-          "subscriber": {
-            "entitlements": {
-              "premium": {
-                "expires_date": "2099-12-31T23:59:59Z",
-                "product_identifier": "com.neybox.pillow.premium.year",
-                "purchase_date": "2023-01-01T00:00:00Z"
-              }
-            },
-            "subscriptions": {
-              "com.neybox.pillow.premium.year": {
-                "expires_date": "2099-12-31T23:59:59Z",
-                "purchase_date": "2023-01-01T00:00:00Z",
-                "ownership_type": "PURCHASED",
-                "store": "app_store"
-              }
-            }
-          }
-        };
+// 读取原始响应数据
+var objc = JSON.parse($response.body);
 
-        // 返回修改后的响应
-        $done({ body: JSON.stringify(obj) });
-    } catch (e) {
-        console.error("JSON 解析失败: ", e);
-        $done();
+// 确保原始数据结构存在
+if (objc.subscriber && objc.subscriber.subscriptions) {
+    // 遍历所有订阅项目
+    for (var subscription in objc.subscriber.subscriptions) {
+        if (objc.subscriber.subscriptions.hasOwnProperty(subscription)) {
+            // 修改到期日期和购买日期
+            objc.subscriber.subscriptions[subscription].expires_date = '2099-12-31T23:59:59Z';
+            objc.subscriber.subscriptions[subscription].purchase_date = '2025-01-01T00:00:00Z';
+        }
     }
-} else {
-    console.error("响应体为空");
-    $done();
+
+    // 确保权限信息也被同步修改
+    if (objc.subscriber.entitlements) {
+        for (var entitlement in objc.subscriber.entitlements) {
+            if (objc.subscriber.entitlements.hasOwnProperty(entitlement)) {
+                objc.subscriber.entitlements[entitlement].expires_date = '2099-12-31T23:59:59Z';
+                objc.subscriber.entitlements[entitlement].purchase_date = '2025-01-01T00:00:00Z';
+            }
+        }
+    }
 }
+
+// 返回修改后的数据
+$done({body: JSON.stringify(objc)});
