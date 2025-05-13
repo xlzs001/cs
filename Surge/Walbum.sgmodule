@@ -1,0 +1,11 @@
+#!name =Walbum
+#!desc = 解锁订阅，进入软件后即可正常解锁，非一次性解锁，使用期间需保持插件始终开启。如有异常卸载重装后再次尝试。
+#!category = 会员解锁
+
+[Script]
+Walbum Unlock = type=http-response, pattern=^https:\/\/buy\.itunes\.apple\.com\/.*, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/xlzs001/cs/refs/heads/main/Surge/Walbum.js
+
+[MITM]
+hostname = buy.itunes.apple.com
+
+
