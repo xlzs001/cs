@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name        Pillow Premium Unlock (Surge)
-// @description 解锁 Pillow 高级订阅权限 (Surge)
-// @match       https://api.rc-backup.com/*
-// @match       https://revenuecat.com/*
-// @match       https://api.revenuecat.com/*
-// @script-type surge
-// ==/UserScript==
-
 let objc = JSON.parse($response.body);
 
 objc = {
