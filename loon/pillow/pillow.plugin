@@ -1,6 +1,6 @@
 #!name = Pillow
 #!desc = 使用声明：此脚本仅供学习与交流使用 请勿贩卖！
-#!openUrl = 1.1
+#!openUrl = 仅供开发测试，如有问题请立即删除本插件
 #!author = @GundamWarrior
 #!tag = 会员解锁
 #!system = iOS iPadOS
@@ -8,7 +8,7 @@
 #!loon_version = 3.2.9(837)
 #!homepage = https://github.com/xlzs001
 #!icon = https://raw.githubusercontent.com/mist-whisper/Icon/master/MyIcon/Pillow.png
-#!date = 2025-05-09 15:00
+#!date = 2025-05-14 13:30
 
 
 [MITM]
