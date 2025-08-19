@@ -5,10 +5,10 @@
 #!tag = 会员解锁
 #!system = iOS iPadOS
 #!system_version = 15
-#!loon_version = 3.2.9(837)
+#!loon_version = 5.16.1
 #!homepage = https://github.com/xlzs001
 #!icon = https://raw.githubusercontent.com/mist-whisper/Icon/master/MyIcon/Pillow.png
-#!date = 2025-05-14 13:30
+#!date = 2025-08-19 11:20
 
 
 [URL Rewrite]
@@ -16,3 +16,4 @@
 
 [MITM]
 hostname = %APPEND% api.revenuecat.com, api.rc-backup.com
+
